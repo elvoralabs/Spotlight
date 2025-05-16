@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spotlight/components/colors.dart';
-import 'package:spotlight/login_signup_pages/login_folder/loginPage.dart';
-import 'package:spotlight/screens/transition_screens.dart';
+import 'package:spotlight/view/login_signup_pages/login_folder/loginPage.dart';
+import 'package:spotlight/view/login_signup_pages/transition_screens.dart';
 
 void main() {
   runApp(const MyApp());

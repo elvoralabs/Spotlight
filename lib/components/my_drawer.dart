@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotlight/homepages/dashboard.dart';
+import 'package:spotlight/view/menu_items_pages/dashboard.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});

@@ -1,67 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:iconsax/iconsax.dart';
 
-class MyAppbar extends StatefulWidget {
-  const MyAppbar({super.key});
+class MyAppbar extends StatelessWidget {
+  final String pageTitle;
+  const MyAppbar({super.key, required this.pageTitle});
 
-  @override
-  State<MyAppbar> createState() => _MyAppbarState();
-}
-
-class _MyAppbarState extends State<MyAppbar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          //profile pics
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/images/man1.jpg'),
-            radius: 25,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        MyCircleButtons(
+          theIcon: Icons.keyboard_arrow_left,
+          backgroundColor: AppColors.transparent,
+          iconColor: AppColors.black,
+          onTap: () {},
+        ),
+        Expanded(
+          child: Center(
+            child: Text(
+              pageTitle,
+              style: GoogleFonts.inter(
+                  fontSize: 20,
+                  color: AppColors.black,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
+        ),
 
-          SizedBox(
-            width: 10,
-          ),
-
-          //column: 2 rows of text
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Welcome back,",
-                style: TextStyle(fontSize: 16, color: AppColors.textPrimary),
-              ),
-              Text(
-                "John Doe",
-                style: TextStyle(fontSize: 12),
-              ),
-            ],
-          ),
-          Spacer(),
-
-          //icon notification
-
-          MyCircleButtons(
-            theIcon: Iconsax.notification,
-            backgroundColor: AppColors.secondary,
-            onTap: () {},
-          ),
-          SizedBox(
-            width: 10,
-          ),
-
-          //icon setting
-          MyCircleButtons(
-            theIcon: Iconsax.setting_2,
-            backgroundColor: AppColors.secondary,
-            onTap: () {},
-          ),
-        ],
-      ),
+        //icon setting
+        // MyCircleButtons(
+        //   theIcon: Iconsax.notification,
+        //   backgroundColor: AppColors.transparent,
+        //   onTap: () {},
+        // ),
+      ],
     );
   }
 }
