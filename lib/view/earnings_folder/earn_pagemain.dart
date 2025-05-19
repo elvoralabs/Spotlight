@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
-import 'package:spotlight/earnings_folder/earn_pagemain_tabs.dart';
+import 'package:spotlight/view/earnings_folder/earn_pagemain_tabs.dart';
 
 class EarnPagemain extends StatefulWidget {
   const EarnPagemain({super.key});

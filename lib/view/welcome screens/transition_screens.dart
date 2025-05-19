@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/view/login_signup_pages/login_folder/loginPage.dart';
 import 'package:spotlight/view/login_signup_pages/sign_up_folder/signupPage.dart';
+import 'package:spotlight/view/welcome%20screens/splash_screens.dart';
 
 class TransitionScreens extends StatefulWidget {
   const TransitionScreens({super.key});
@@ -39,7 +40,12 @@ class _TransitionScreensState extends State<TransitionScreens> {
       } else {
         _timer.cancel();
         // Navigate to the next screen after the last page
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignupPage(),
+          ),
+        );
       }
       setState(() {});
     });
@@ -303,7 +309,8 @@ class _TransitionScreensState extends State<TransitionScreens> {
         bottom: 0,
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.3,
+          // height: MediaQuery.of(context).size.height * 0.3,
+          height: 280,
           decoration: BoxDecoration(
             color: AppColors.background,
             borderRadius: const BorderRadius.only(
@@ -321,10 +328,11 @@ class _TransitionScreensState extends State<TransitionScreens> {
                   Text(
                     text1,
                     style: GoogleFonts.inter(
-                        fontSize: 13, fontWeight: FontWeight.bold),
+                        fontSize: 10, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
               //horizontal decoration line
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -342,7 +350,7 @@ class _TransitionScreensState extends State<TransitionScreens> {
                 buttonBackgroundColor: AppColors.primary,
                 buttonTextcolor: AppColors.background,
                 buttonWidth: MediaQuery.of(context).size.width * 0.9,
-                buttonHeight: 50,
+                buttonHeight: 45,
                 // onTap: () {
                 //   setState((BuildContext) {
                 //     _currentPage == index(context);
@@ -358,7 +366,7 @@ class _TransitionScreensState extends State<TransitionScreens> {
                 //   Navigator.push(
                 //     context,
                 //     MaterialPageRoute(
-                //       builder: (context) => SignupPage(),
+                //       builder: (context) => SplashScreens(),
                 //     ),
                 //   );
                 // },

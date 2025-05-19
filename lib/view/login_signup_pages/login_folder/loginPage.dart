@@ -6,7 +6,7 @@ import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/components/my_textfield.dart';
 import 'package:spotlight/view/login_signup_pages/reset_passwordPages/resetPasswordPage.dart';
-import 'package:spotlight/view/homepages/select_screen.dart';
+import 'package:spotlight/view/main_screens/select_screen.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});

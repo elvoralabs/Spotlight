@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spotlight/view/homepages/talent_organizer_home.dart';
+import 'package:spotlight/view/main_screens/talent_organizer_home.dart';
 
 class ChooseRolePage extends StatefulWidget {
   const ChooseRolePage({super.key});

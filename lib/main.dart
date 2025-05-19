@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/view/login_signup_pages/login_folder/loginPage.dart';
-import 'package:spotlight/view/login_signup_pages/transition_screens.dart';
+import 'package:spotlight/view/welcome%20screens/transition_screens.dart';
+import 'package:spotlight/view/welcome%20screens/splash_screens.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: TransitionScreens(),
+      home: SplashScreens(),
     );
   }
 }

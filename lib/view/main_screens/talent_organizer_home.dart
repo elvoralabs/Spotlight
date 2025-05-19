@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:spotlight/view/homepages/random.dart';
+import 'package:spotlight/view/main_screens/random.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/components/my_drawer.dart';
-import 'package:spotlight/view/homepages/comments_screen.dart';
+import 'package:spotlight/view/post%20details%20screens/comments_screen.dart';
 import 'package:spotlight/view/profile%20screens/notificationsPage.dart';
 import 'package:spotlight/models/video_list.dart';
 

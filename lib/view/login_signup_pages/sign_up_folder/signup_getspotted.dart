@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
-import 'package:spotlight/earnings_folder/earn_pagemain.dart';
-import 'package:spotlight/view/homepages/talent_organizer_home.dart';
-import 'package:spotlight/view/homepages/select_screen.dart';
+import 'package:spotlight/view/earnings_folder/earn_pagemain.dart';
+import 'package:spotlight/view/main_screens/talent_organizer_home.dart';
+import 'package:spotlight/view/main_screens/select_screen.dart';
 
 class SignupGetspotted extends StatefulWidget {
   const SignupGetspotted({super.key});

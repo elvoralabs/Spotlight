@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:spotlight/components/colors.dart';
-import 'package:spotlight/view/homepages/create_page.dart';
-import 'package:spotlight/view/homepages/explore_page.dart';
-import 'package:spotlight/view/homepages/inbox_page.dart';
-import 'package:spotlight/view/homepages/profile_page.dart';
-import 'package:spotlight/view/homepages/talent_organizer_home.dart';
+import 'package:spotlight/view/main_screens/create_page.dart';
+import 'package:spotlight/view/main_screens/explore_page.dart';
+import 'package:spotlight/view/main_screens/inbox_page.dart';
+import 'package:spotlight/view/main_screens/profile_page.dart';
+import 'package:spotlight/view/main_screens/talent_organizer_home.dart';
 
 class SelectScreen extends StatefulWidget {
   const SelectScreen({super.key});
