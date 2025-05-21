@@ -6,8 +6,8 @@ import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/components/my_drawer.dart';
-import 'package:spotlight/view/post%20details%20screens/comments_screen.dart';
-import 'package:spotlight/view/profile%20screens/notificationsPage.dart';
+import 'package:spotlight/view/post_details_screens/comments_screen.dart';
+import 'package:spotlight/view/main_screens/notificationsPage.dart';
 import 'package:spotlight/models/video_list.dart';
 
 class TalentOrganizerHomeTest extends StatefulWidget {
@@ -72,7 +72,7 @@ class _TalentOrganizerHomeTestState extends State<TalentOrganizerHomeTest> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Notificationspage(),
+                    builder: (context) => NotificationsPage(),
                   ),
                 );
               },

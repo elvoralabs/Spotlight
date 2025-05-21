@@ -59,5 +59,23 @@ class VideoList {
       'thumbnail': 'assets/images/guy.png',
       'profilePic': 'assets/images/bab.png',
     },
+    {
+      'id': 7,
+      'genre': 'Acting',
+      'creator': 'Ben Carson',
+      'time': '2days',
+      'title': 'Dance in the rain',
+      'thumbnail': 'assets/images/m3.png',
+      'profilePic': 'assets/images/bab.png',
+    },
+    {
+      'id': 8,
+      'genre': 'Acting',
+      'creator': 'Laniya Yola',
+      'time': '2days',
+      'title': 'Dance in the rain',
+      'thumbnail': 'assets/images/i3.png',
+      'profilePic': 'assets/images/bab.png',
+    },
   ];
 }

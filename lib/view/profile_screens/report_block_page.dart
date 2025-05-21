@@ -7,7 +7,7 @@ import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/components/my_signup_appbar.dart';
 import 'package:spotlight/components/my_textfield.dart';
-import 'package:spotlight/view/profile%20screens/security_settingsPage.dart';
+import 'package:spotlight/view/profile_screens/security_settingsPage.dart';
 
 class Report_BlockPage extends StatefulWidget {
   const Report_BlockPage({super.key});

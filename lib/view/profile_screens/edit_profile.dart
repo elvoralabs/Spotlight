@@ -5,9 +5,9 @@ import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_appbar.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/components/my_signup_appbar.dart';
-import 'package:spotlight/view/profile%20screens/help_supportPage.dart';
-import 'package:spotlight/view/profile%20screens/report_block_page.dart';
-import 'package:spotlight/view/profile%20screens/security_settingsPage.dart';
+import 'package:spotlight/view/profile_screens/help_supportPage.dart';
+import 'package:spotlight/view/profile_screens/report_block_page.dart';
+import 'package:spotlight/view/profile_screens/security_settingsPage.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});

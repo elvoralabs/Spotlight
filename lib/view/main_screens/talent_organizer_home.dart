@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:spotlight/view/main_screens/random.dart';
+import 'package:share_plus/share_plus.dart';
+// import 'package:spotlight/view/main_screens/random.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
-import 'package:spotlight/components/my_drawer.dart';
-import 'package:spotlight/view/post%20details%20screens/comments_screen.dart';
-import 'package:spotlight/view/profile%20screens/notificationsPage.dart';
+import 'package:spotlight/components/video_liked_button.dart';
+import 'package:spotlight/models/notification_model_folder/notification_service.dart';
+// import 'package:spotlight/components/my_drawer.dart';
+import 'package:spotlight/view/post_details_screens/comments_screen.dart';
+import 'package:spotlight/view/main_screens/notificationsPage.dart';
 import 'package:spotlight/models/video_list.dart';
 
 class TalentOrganizerHome extends StatefulWidget {
@@ -22,7 +26,7 @@ class _TalentOrganizerHomeState extends State<TalentOrganizerHome> {
   int _currentCarouselIndex = 0;
 
   int _selectGenre = 0;
-  late final List<String> genresList = ['Music', 'Art', 'Dance'];
+  late final List<String> genresList = ['Music', 'Art', 'Dance', 'Acting'];
 
   //this is to call the instance of class VideoList from another file
   VideoList videoList = VideoList();
@@ -61,7 +65,7 @@ class _TalentOrganizerHomeState extends State<TalentOrganizerHome> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TalentOrganizerHomeTest(),
+                          builder: (context) => NotificationsPage(),
                         ),
                       );
                     },
@@ -489,12 +493,35 @@ class _TalentOrganizerHomeState extends State<TalentOrganizerHome> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               spacing: 20,
                               children: [
+                                //like button
+                                GestureDetector(
+                                  onTap: () {
+                                    NotificationService().addNotification(
+                                        "Someone just liked your post");
+                                    setState(() {});
+                                  },
+                                  child: VideoLikeButton(
+                                    // icon: Iconsax.heart,
+                                    initialCount: 66,
+                                  ),
+                                ),
+                                // videoMetrics(
+                                //     theIcon: Icons.favorite_border_outlined,
+                                //     theText: "66k",
+                                //     onTap: () {
+                                //       NotificationService().addNotification(
+                                //           "Someone just liked your post");
+                                //       setState(() {});
+                                //     }),
+
+                                //comment section
                                 videoMetrics(
-                                    theIcon: Icons.favorite_border_outlined,
-                                    theText: "66k",
-                                    onTap: () {}),
-                                videoMetrics(
-                                    theIcon: Iconsax.message,
+                                    theWidget: SvgPicture.asset(
+                                        'assets/images/comment_icon.svg',
+                                        width: 24,
+                                        height: 24),
+
+                                    // theIcon: Iconsax.message,
                                     theText: "22k",
                                     onTap: () {
                                       showModalBottomSheet(
@@ -522,17 +549,44 @@ class _TalentOrganizerHomeState extends State<TalentOrganizerHome> {
                                           );
                                         },
                                       );
+                                      NotificationService().addNotification(
+                                          "Someone commented on your post!");
                                     }),
+                                //share button
                                 videoMetrics(
-                                    theIcon: Iconsax.document_forward,
+                                    theWidget: SvgPicture.asset(
+                                        'assets/images/share_item_icon.svg',
+                                        width: 24,
+                                        height: 24),
+                                    // theIcon: Iconsax.document_forward,
+                                    theText: "1k",
+                                    onTap: () {
+                                      SharePlus.instance.share(
+                                        ShareParams(
+                                          text: 'Share to:',
+                                        ),
+                                      );
+                                      setState(
+                                        () {
+                                          // ignore: deprecated_member_use
+                                          // Share.share('Share the link');
+                                        },
+                                      );
+                                    }),
+                                //gift button
+                                videoMetrics(
+                                    theWidget: SvgPicture.asset(
+                                        'assets/images/gift_icon.svg',
+                                        width: 24,
+                                        height: 24),
+                                    // theIcon: Iconsax.gift,
                                     theText: "1k",
                                     onTap: () {}),
+                                //bookmark button
                                 videoMetrics(
-                                    theIcon: Iconsax.gift,
-                                    theText: "1k",
-                                    onTap: () {}),
-                                videoMetrics(
-                                    theIcon: Icons.bookmark,
+                                    theWidget: Icon(Icons.bookmark,
+                                        color: Colors.white, size: 24),
+                                    // theIcon: Icons.bookmark,
                                     theText: "100",
                                     onTap: () {}),
                               ],
@@ -552,19 +606,25 @@ class _TalentOrganizerHomeState extends State<TalentOrganizerHome> {
   }
 
   Column videoMetrics(
-      {required IconData theIcon,
+      {
+      // required IconData? theIcon,
+      required Widget? theWidget,
       required String theText,
       required VoidCallback? onTap}) {
     return Column(
       children: [
         GestureDetector(
           onTap: onTap,
-          child: Icon(
-            theIcon,
-            color: Colors.white,
-            size: 18,
-          ),
+          child: theWidget,
         ),
+        // GestureDetector(
+        //   onTap: onTap,
+        //   child: Icon(
+        //     theIcon,
+        //     color: Colors.white,
+        //     size: 18,
+        //   ),
+        // ),
         Text(
           theText,
           style: GoogleFonts.inter(color: Colors.white, fontSize: 10),

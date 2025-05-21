@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
-import 'package:spotlight/view/profile%20screens/edit_profile.dart';
+import 'package:spotlight/view/profile_screens/edit_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -42,12 +42,14 @@ class _VideoLikeButtonState extends State<VideoLikeButton> {
       child: Column(
         children: [
           Icon(
-            isLiked ? Iconsax.heart5 : Iconsax.heart, // filled vs outline
-            color: isLiked ? Colors.red : Colors.white,
+            isLiked
+                ? Icons.favorite
+                : Icons.favorite_border_outlined, // filled vs outline
+            color: isLiked ? Colors.red : Colors.white, size: 24,
           ),
           Text(
             "${likeCount}k",
-            style: GoogleFonts.inter(color: Colors.white),
+            style: GoogleFonts.inter(color: Colors.white, fontSize: 11.0),
           ),
         ],
       ),
