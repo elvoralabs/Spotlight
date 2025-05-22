@@ -167,6 +167,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                           height: MediaQuery.sizeOf(context).height * 0.63,
                           // height: 500,
                           child: ListView.builder(
+                              padding: EdgeInsets.only(bottom: 40),
                               itemCount: commentsList.length,
                               itemBuilder: (context, index) {
                                 final comment = commentsList[index];
@@ -247,81 +248,128 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                 );
                               }),
                         ),
+                        SizedBox(
+                          height: 50,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
             ),
+
             // Current user comment box
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               color: Colors.white, // Optional: Add a background color
-              child: Row(
+              child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 20.0,
-                    backgroundImage: AssetImage('assets/images/guy.png'),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: TextField(
-                        controller: userCommentController,
-                        onTap: () {
-                          // Handle the text field tap
-                        },
-                        onChanged: (value) {
-                          if (value.isNotEmpty) {
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      for (var emoji in [
+                        '😀',
+                        '😍',
+                        '😂',
+                        '🔥',
+                        '👏',
+                        '🥳',
+                        '😎',
+                        '🤩',
+                        '🙌'
+                      ])
+                        GestureDetector(
+                          onTap: () {
                             setState(() {
-                              sendTrue = true;
+                              userCommentController.text += emoji;
+                              userCommentController.selection =
+                                  TextSelection.fromPosition(
+                                TextPosition(
+                                    offset: userCommentController.text.length),
+                              );
                             });
-                          } else {
-                            setState(() {
-                              sendTrue = false;
-                            });
-                          }
-                        },
-                        onSubmitted: (value) {
-                          // Handle the comment submission
-                          if (value.isNotEmpty) {
-                            // Add the comment to the list
-                            setState(() {
-                              commentsList.add({
-                                "id": commentsList.length + 1,
-                                "commenterPic": 'assets/images/guy.png',
-                                "commenterName": "You",
-                                "commenterComment": value,
-                                "commentTime": "Just now",
-                                "commentLikes": 0,
-                                "isLiked": false,
-                              });
-                              userCommentController.clear();
-                            });
-                          }
-                        },
-                        decoration: InputDecoration(
-                          fillColor: AppColors.neutralLightExtra,
-                          filled: true,
-                          hintText: "Add a comment...",
-                          hintStyle: TextStyle(color: AppColors.neutral),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              sendTrue ? Icons.send : Iconsax.sticker,
-                              size: 19,
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Text(
+                              emoji,
+                              style: TextStyle(fontSize: 24),
                             ),
-                            onPressed: () {},
-                            color: AppColors.neutral,
                           ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 25),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(25),
+                        ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20.0,
+                        backgroundImage: AssetImage('assets/images/guy.png'),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: TextField(
+                            controller: userCommentController,
+                            onTap: () {
+                              // Handle the text field tap
+                            },
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                setState(() {
+                                  sendTrue = true;
+                                });
+                              } else {
+                                setState(() {
+                                  sendTrue = false;
+                                });
+                              }
+                            },
+                            onSubmitted: (value) {
+                              // Handle the comment submission
+                              if (value.isNotEmpty) {
+                                // Add the comment to the list
+                                setState(() {
+                                  commentsList.add({
+                                    "id": commentsList.length + 1,
+                                    "commenterPic": 'assets/images/guy.png',
+                                    "commenterName": "You",
+                                    "commenterComment": value,
+                                    "commentTime": "Just now",
+                                    "commentLikes": 0,
+                                    "isLiked": false,
+                                  });
+                                  userCommentController.clear();
+                                });
+                              }
+                            },
+                            decoration: InputDecoration(
+                              fillColor: AppColors.neutralLightExtra,
+                              filled: true,
+                              hintText: "Add a comment...",
+                              hintStyle: TextStyle(color: AppColors.neutral),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  sendTrue ? Icons.send : Iconsax.sticker,
+                                  size: 19,
+                                ),
+                                onPressed: () {},
+                                color: AppColors.neutral,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 25),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),

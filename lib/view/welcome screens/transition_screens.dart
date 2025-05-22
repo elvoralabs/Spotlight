@@ -40,12 +40,12 @@ class _TransitionScreensState extends State<TransitionScreens> {
       } else {
         _timer.cancel();
         // Navigate to the next screen after the last page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignupPage(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => SignupPage(),
+        //   ),
+        // );
       }
       setState(() {});
     });
