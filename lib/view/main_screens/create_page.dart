@@ -1,13 +1,18 @@
+import 'package:camera/camera.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
+import 'package:spotlight/view/create_post_folder/camera_page.dart';
+import 'package:spotlight/view/create_post_folder/take_picture.dart';
 
 String? selectedCategory;
 
 class CreatePage extends StatefulWidget {
-  const CreatePage({super.key});
+  final List<CameraDescription> cameras;
+
+  const CreatePage({super.key, required this.cameras});
 
   @override
   State<CreatePage> createState() => _CreatePageState();
@@ -205,7 +210,32 @@ class _CreatePageState extends State<CreatePage> {
                   buttonHeight: 50,
                   buttonWidth: MediaQuery.of(context).size.width * 0.9,
                   buttonTextcolor: AppColors.background,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CameraPage(),
+                      ),
+                    );
+                  },
+                ),
+                MyButtons(
+                  buttonText: "Take Picture",
+                  buttonBackgroundColor: AppColors.primary,
+                  buttonHeight: 50,
+                  buttonWidth: MediaQuery.of(context).size.width * 0.9,
+                  buttonTextcolor: AppColors.background,
+                  onTap: () async {
+                    final cameras = await availableCameras();
+                    final firstCamera = cameras.first;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TakePictureScreen(
+                                camera: firstCamera,
+                              )),
+                    );
+                  },
                 ),
               ],
             ),

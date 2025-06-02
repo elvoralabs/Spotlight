@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class VideoList {
   List<Map<String, dynamic>> videos = [
     //two options here for the genre sorting:

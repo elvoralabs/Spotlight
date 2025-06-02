@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:spotlight/components/colors.dart';
+import 'package:spotlight/main.dart';
 import 'package:spotlight/view/main_screens/create_page.dart';
 import 'package:spotlight/view/main_screens/explore_page.dart';
 import 'package:spotlight/view/main_screens/inbox_page.dart';
@@ -23,7 +24,7 @@ class _SelectScreenState extends State<SelectScreen> {
     page = [
       TalentOrganizerHome(),
       ExplorePage(),
-      CreatePage(),
+      CreatePage(cameras: cameras),
       InboxPage(),
       ProfilePage(),
     ];

@@ -1,10 +1,11 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:spotlight/components/colors.dart';
-import 'package:spotlight/view/login_signup_pages/login_folder/loginPage.dart';
-import 'package:spotlight/view/welcome%20screens/transition_screens.dart';
 import 'package:spotlight/view/welcome%20screens/splash_screens.dart';
 
-void main() {
+List<CameraDescription> cameras = [];
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

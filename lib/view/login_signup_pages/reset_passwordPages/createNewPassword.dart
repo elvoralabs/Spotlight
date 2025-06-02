@@ -5,7 +5,7 @@ import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_signup_appbar.dart';
 import 'package:spotlight/components/my_textfield.dart';
 import 'package:spotlight/view/login_signup_pages/reset_passwordPages/resetPasswordCode.dart';
-import 'package:spotlight/view/login_signup_pages/sign_up_folder/signup_finalPage.dart';
+// import 'package:spotlight/view/login_signup_pages/sign_up_folder/signup_finalPage.dart';
 
 class CreateNewPassword extends StatefulWidget {
   const CreateNewPassword({super.key});
