@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:spotlight/view/create_post_folder/media_gallery.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});
@@ -61,6 +62,17 @@ class _CameraPageState extends State<CameraPage> {
             ),
             ElevatedButton.icon(
               onPressed: () => _pickImage(ImageSource.gallery),
+              icon: Icon(Icons.photo),
+              label: Text("Choose from Gallery"),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MediaGalleryScreen(),
+                  ),
+                );
+              },
               icon: Icon(Icons.photo),
               label: Text("Choose from Gallery"),
             ),

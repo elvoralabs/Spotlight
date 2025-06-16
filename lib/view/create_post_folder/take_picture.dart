@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:spotlight/components/colors.dart';
+import 'package:spotlight/view/create_post_folder/media_gallery.dart';
+import 'package:spotlight/view/create_post_folder/pre_post_page.dart';
 import 'package:video_player/video_player.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -27,7 +31,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   bool _isRecording = false;
   String? _lastVideoPath;
   File? _image;
+  AssetEntity? _latestImage;
   final ImagePicker _picker = ImagePicker();
+
+  MediaGalleryScreen mg = MediaGalleryScreen();
 
   @override
   void initState() {
@@ -37,12 +44,36 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       ResolutionPreset.high,
     );
     _initializeControllerFuture = _controller.initialize();
+    _fetchLatestImage();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void switchCamera() async {
+    final cameras = await availableCameras();
+    final lensDirection = _controller!.description.lensDirection;
+    final newCamera = cameras.firstWhere(
+      (camera) => camera.lensDirection != lensDirection,
+      orElse: () => cameras.first,
+    );
+    _controller = CameraController(newCamera, ResolutionPreset.high);
+    await _controller!.initialize();
+    setState(() {});
+  }
+
+  Future<void> _fetchLatestImage() async {
+    final albums = await PhotoManager.getAssetPathList(type: RequestType.image);
+    if (albums.isNotEmpty) {
+      final recentAlbum = albums.first;
+      final images = await recentAlbum.getAssetListPaged(page: 0, size: 1);
+      if (images.isNotEmpty) {
+        setState(() => _latestImage = images.first);
+      }
+    }
   }
 
   @override
@@ -68,6 +99,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             color: AppColors.background,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: GestureDetector(
+              onTap: switchCamera,
+              child: const Icon(Icons.cameraswitch, color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -136,15 +176,18 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         try {
                           await _initializeControllerFuture;
                           final image = await _controller.takePicture();
+                          final asset = await PhotoManager.editor
+                              .saveImageWithPath(image.path);
                           setState(() {
                             _lastImagePath = image.path;
                           });
                           if (!context.mounted) return;
+
                           await Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => DisplayPictureScreen(
-                                imagePath: image.path,
-                              ),
+                              builder: (context) => PrePostPage(selectedMedia: [
+                                asset
+                              ]), // Pass an empty list or the correct AssetEntity list
                             ),
                           );
                         } catch (e) {
@@ -170,6 +213,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           try {
                             final video =
                                 await _controller.stopVideoRecording();
+                            final asset = await PhotoManager.editor
+                                .saveVideo(File(video.path));
                             setState(() {
                               _isRecording = false;
                               _lastVideoPath = video.path;
@@ -177,8 +222,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                             if (!context.mounted) return;
                             await Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => DisplayVideoScreen(
-                                  videoPath: video.path,
+                                builder: (context) => PrePostPage(
+                                  selectedMedia: [asset],
                                 ),
                               ),
                             );
@@ -219,28 +264,37 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           Positioned(
             right: 24,
             bottom: 24,
-            child: _lastImagePath != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.file(
-                      File(_lastImagePath!),
-                      width: 56,
-                      height: 56,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : GestureDetector(
-                    onTap: () async {
-                      final XFile? image =
-                          await _picker.pickImage(source: ImageSource.gallery);
-                      if (image != null && context.mounted) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => DisplayPictureScreen(
-                                  imagePath: image.path,
-                                )));
-                      }
-                    },
-                    child: SizedBox(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MediaGalleryScreen(),
+                  ),
+                );
+              },
+              child: _latestImage != null
+                  ? FutureBuilder<Uint8List?>(
+                      future: _latestImage!.thumbnailDataWithSize(
+                        const ThumbnailSize(64, 64),
+                      ),
+                      builder: (_, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData &&
+                            snapshot.data != null) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.memory(
+                              snapshot.data!,
+                              width: 48,
+                              height: 48,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        }
+                        return const SizedBox(width: 48, height: 48);
+                      },
+                    )
+                  : SizedBox(
                       width: 56,
                       height: 56,
                       child: Icon(
@@ -249,7 +303,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         size: 40,
                       ),
                     ),
-                  ),
+            ),
           )
         ],
       ),

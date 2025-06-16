@@ -2,7 +2,16 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        // maven { url "https://repo.maven.apache.org/maven2" }
+        // maven { url "https://maven.arthenica.com/public" }
     }
+
+    // configurations.all {
+    //     resolutionStrategy {
+    //         force 'com.arthenica:ffmpeg-kit-https:4.5.LTS'
+    //     }
+    // }
 }
 
 rootProject.buildDir = "../build"
