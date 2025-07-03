@@ -3,13 +3,41 @@ allprojects {
         google()
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
-        // maven { url "https://repo.maven.apache.org/maven2" }
-        // maven { url "https://maven.arthenica.com/public" }
+        maven { url "https://repo.maven.apache.org/maven2" }
+        maven { url "https://maven.arthenica.com/public" }
     }
 
     // configurations.all {
     //     resolutionStrategy {
     //         force 'com.arthenica:ffmpeg-kit-https:4.5.LTS'
+    //     }
+    // }
+
+    //     subprojects {
+    //     afterEvaluate { project ->
+    //         if (project.hasProperty('android')) {
+    //             project.android {
+    //                 if (namespace == null) {
+    //                     namespace project.group
+    //                 }
+
+    //                 compileOptions {
+    //                     sourceCompatibility JavaVersion.VERSION_17
+    //                     targetCompatibility JavaVersion.VERSION_17
+    //                 }
+    //                 tasks.withType(KotlinCompile).configureEach {
+    //                     kotlinOptions {
+    //                         jvmTarget = "17"
+    //                     }
+    //                 }
+    //                 java {
+    //                     toolchain {
+    //                         languageVersion = JavaLanguageVersion.of(17)
+    //                     }
+    //                 }
+
+    //             }
+    //         }
     //     }
     // }
 }

@@ -4,14 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
+import 'package:spotlight/models/select_media_model/selected_media_provider.dart';
 import 'package:spotlight/view/create_post_folder/full_screenmedia_view.dart';
 // import 'package:spotlight/view/create_post_folder/full_screenmedia_view.dart';
 
 class PreviewImgagePage extends StatefulWidget {
-  final List<AssetEntity> selectedMedia;
-  const PreviewImgagePage({super.key, this.selectedMedia = const []});
+  // final List<AssetEntity> selectedMedia;
+  const PreviewImgagePage({
+    super.key,
+  });
 
   @override
   State<PreviewImgagePage> createState() => _PreviewImgagePageState();
@@ -21,13 +25,13 @@ class _PreviewImgagePageState extends State<PreviewImgagePage> {
   @override
   void initState() {
     super.initState();
-    selectedMedia = widget.selectedMedia;
   }
-
-  late List<AssetEntity> selectedMedia;
 
   @override
   Widget build(BuildContext context) {
+    final selectedMedia =
+        Provider.of<SelectedMediaProvider>(context).selectedMedia;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -82,7 +86,8 @@ class _PreviewImgagePageState extends State<PreviewImgagePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => FullscreenMediaViewer(
-                                        asset: selectedMedia[index])));
+                                        // asset: selectedMedia[index]
+                                        )));
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),

@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
-import 'package:spotlight/view/create_post_folder/media_gallery.dart';
+import 'package:spotlight/main.dart';
+import 'package:spotlight/models/select_media_model/selected_media_provider.dart';
+// import 'package:spotlight/view/create_post_folder/media_gallery.dart';
 import 'package:spotlight/view/create_post_folder/preview_page.dart';
+import 'package:spotlight/view/main_screens/select_screen.dart';
+import 'package:spotlight/view/main_screens/talent_organizer_home.dart';
 
 class PrePostPage extends StatefulWidget {
-  final List<AssetEntity> selectedMedia;
-  const PrePostPage({super.key, this.selectedMedia = const []});
+  // final List<AssetEntity> selectedMedia;
+  const PrePostPage({
+    super.key,
+  });
 
   @override
   State<PrePostPage> createState() => _PrePostPageState();
@@ -30,26 +37,14 @@ class _PrePostPageState extends State<PrePostPage> {
   @override
   void initState() {
     super.initState();
-    selectedMedia = widget.selectedMedia;
+    // selectedMedia = widget.selectedMedia;
     selectedCategory = categories[0]; // Show 'Music' by default
   }
 
-  late List<AssetEntity> selectedMedia;
-
-  // void _openGallery() async {
-  //   final result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => MediaGalleryScreen()),
-  //   );
-  //   if (result != null && result is List<AssetEntity>) {
-  //     setState(() {
-  //       selectedMedia = result;
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final selectedMedia =
+        Provider.of<SelectedMediaProvider>(context).selectedMedia;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -87,11 +82,12 @@ class _PrePostPageState extends State<PrePostPage> {
                     Spacer(),
                     MyButtons(
                         onTap: () {
+                          Provider.of<SelectedMediaProvider>(context,
+                                  listen: false)
+                              .setSelectedMedia(selectedMedia);
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => PreviewImgagePage(
-                                selectedMedia: selectedMedia,
-                              ),
+                              builder: (context) => PreviewImgagePage(),
                             ),
                           );
                         },
@@ -404,12 +400,14 @@ class _PrePostPageState extends State<PrePostPage> {
                     fontWeight: FontWeight.w600,
                   ),
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => CameraPage(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectScreen(
+                          cameras: cameras,
+                        ),
+                      ),
+                    );
                   },
                 ),
                 SizedBox(

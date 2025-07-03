@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
-import 'package:spotlight/view/create_post_folder/camera_page.dart';
+import 'package:spotlight/view/temp_unknown/camera_page.dart';
 import 'package:spotlight/view/create_post_folder/take_picture.dart';
 
 String? selectedCategory;

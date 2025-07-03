@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
+import 'package:spotlight/main.dart';
 import 'package:spotlight/view/earnings_folder/earn_pagemain.dart';
 import 'package:spotlight/view/main_screens/talent_organizer_home.dart';
 import 'package:spotlight/view/main_screens/select_screen.dart';
@@ -60,7 +61,9 @@ class _SignupGetspottedState extends State<SignupGetspotted> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SelectScreen(),
+                          builder: (context) => SelectScreen(
+                            cameras: cameras,
+                          ),
                         ),
                       );
                     },

@@ -7,9 +7,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:spotlight/components/colors.dart';
+import 'package:spotlight/components/my_buttons.dart';
+import 'package:spotlight/main.dart';
+import 'package:spotlight/models/select_media_model/selected_media_provider.dart';
 import 'package:spotlight/view/create_post_folder/media_gallery.dart';
 import 'package:spotlight/view/create_post_folder/pre_post_page.dart';
+import 'package:spotlight/view/create_post_folder/preview_page.dart';
+import 'package:spotlight/view/main_screens/select_screen.dart';
+import 'package:spotlight/view/main_screens/talent_organizer_home.dart';
 import 'package:video_player/video_player.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -124,19 +132,24 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               },
             )
           else
+
+            ///DISPLAY THE TEXT OPTION
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: "Type your post...",
-                    hintStyle: TextStyle(color: Colors.white54),
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLines: null,
-                ),
-              ),
+                  padding: const EdgeInsets.all(24.0),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TextPostScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Tap to type',
+                        style: GoogleFonts.inter(
+                            fontSize: 25, color: AppColors.background),
+                      ))),
             ),
 
           // Row of Mode Selector, and capture Button
@@ -183,11 +196,20 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           });
                           if (!context.mounted) return;
 
+                          // await Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => PrePostPage(selectedMedia: [
+                          //       asset
+                          //     ]), // Pass an empty list or the correct AssetEntity list
+                          //   ),
+                          // );
+                          Provider.of<SelectedMediaProvider>(context,
+                                  listen: false)
+                              .setSelectedMedia([asset]);
                           await Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => PrePostPage(selectedMedia: [
-                                asset
-                              ]), // Pass an empty list or the correct AssetEntity list
+                              builder: (context) =>
+                                  DisplayPictureScreen(), // No need to pass selectedMedia
                             ),
                           );
                         } catch (e) {
@@ -220,11 +242,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                               _lastVideoPath = video.path;
                             });
                             if (!context.mounted) return;
+                            Provider.of<SelectedMediaProvider>(context,
+                                    listen: false)
+                                .setSelectedMedia([asset]);
                             await Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => PrePostPage(
-                                  selectedMedia: [asset],
-                                ),
+                                builder: (context) => PrePostPage(),
                               ),
                             );
                           } catch (e) {
@@ -328,28 +351,130 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       ),
     );
   }
-
-  //function to pick image from the gallery
-  Future<void> _pickImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source);
-    if (image != null) {
-      setState(() {
-        _image = File(image.path);
-      });
-    }
-  }
 }
 
 class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({super.key, required this.imagePath});
+  const DisplayPictureScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final selectedMedia =
+        Provider.of<SelectedMediaProvider>(context).selectedMedia;
+    final asset = selectedMedia.isNotEmpty ? selectedMedia[0] : null;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      body: Image.file(File(imagePath)),
+      backgroundColor: AppColors.black,
+      // appBar: AppBar(title: const Text('Display the Picture')),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            asset != null
+                ? AssetEntityImage(
+                    asset,
+                    fit: BoxFit.cover,
+                  )
+                : const Center(child: Text('No image selected')),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Back arrow
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+
+                  // Download icon
+                  GestureDetector(
+                    onTap: () {
+                      // TODO: Add download logic
+                    },
+                    child: const Icon(
+                      Icons.download_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 15,
+              left: 20,
+              right: 20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Action icons
+                  Row(
+                    children: const [
+                      _BottomIconLabel(icon: Icons.text_fields, label: 'Text'),
+                      SizedBox(width: 20),
+                      _BottomIconLabel(
+                        icon: Icons.emoji_emotions_outlined,
+                        label: 'Sticker',
+                      ),
+                      SizedBox(width: 20),
+                      _BottomIconLabel(icon: Icons.crop, label: 'Crop'),
+                    ],
+                  ),
+
+                  // Nexty button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.pinkAccent,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PrePostPage(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Next',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomIconLabel extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _BottomIconLabel({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: Colors.white, size: 20),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 12)),
+      ],
     );
   }
 }
@@ -393,6 +518,161 @@ class _DisplayVideoScreenState extends State<DisplayVideoScreen> {
               )
             : const CircularProgressIndicator(),
       ),
+    );
+  }
+}
+
+class TextPostScreen extends StatefulWidget {
+  const TextPostScreen({super.key});
+
+  @override
+  State<TextPostScreen> createState() => _TextPostScreenState();
+}
+
+class _TextPostScreenState extends State<TextPostScreen> {
+  late TextEditingController myTextController;
+  Color selectedColor = Colors.black;
+
+  @override
+  void initState() {
+    super.initState();
+    myTextController = TextEditingController();
+    myTextController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    myTextController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7.0),
+          child: Column(children: [
+            //header
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    size: 25,
+                    color: AppColors.background,
+                  ),
+                ),
+                Spacer(),
+                if (myTextController.text.isNotEmpty)
+                  MyButtons(
+                      buttonText: "Post",
+                      buttonBackgroundColor: AppColors.primary,
+                      buttonWidth: 96,
+                      buttonHeight: 32,
+                      buttonTextstyle: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.background,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SelectScreen(
+                              cameras: cameras,
+                            ),
+                          ),
+                        );
+                      })
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(color: selectedColor),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: TextField(
+                      controller: myTextController,
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: "What's on your mind?",
+                        hintStyle:
+                            TextStyle(color: Colors.white54, fontSize: 25),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                      maxLines: null,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (final scolor in [
+                    Colors.red,
+                    Colors.purple,
+                    Colors.blueAccent,
+                    Colors.black,
+                    Colors.yellow,
+                    Colors.green,
+                    Colors.pink,
+                    Colors.brown,
+                    Colors.grey,
+                    Colors.deepOrange,
+                    Colors.amber,
+                  ])
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedColor = scolor;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    width: 2,
+                                    color: selectedColor == scolor
+                                        ? Colors.white
+                                        : Colors.transparent)),
+                            child: myColors(backgroundColor: scolor)),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
+            SizedBox(
+              height: 40,
+            )
+          ]),
+        ),
+      ),
+      backgroundColor: selectedColor,
+    );
+  }
+
+  Widget myColors({
+    required Color backgroundColor,
+  }) {
+    return CircleAvatar(
+      radius: 20,
+      backgroundColor: backgroundColor,
     );
   }
 }

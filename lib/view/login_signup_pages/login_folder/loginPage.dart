@@ -5,6 +5,7 @@ import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/components/my_textfield.dart';
+import 'package:spotlight/main.dart';
 import 'package:spotlight/view/login_signup_pages/reset_passwordPages/resetPasswordPage.dart';
 import 'package:spotlight/view/main_screens/select_screen.dart';
 
@@ -23,7 +24,7 @@ class _LoginpageState extends State<Loginpage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -64,7 +65,7 @@ class _LoginpageState extends State<Loginpage> {
                   ],
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 5),
                 Column(
                   children: [
                     Text("🚀 Ready to Shine?",
@@ -122,19 +123,24 @@ class _LoginpageState extends State<Loginpage> {
                 ),
                 const SizedBox(height: 25),
 
-                MyButtons(
-                  buttonText: "Login",
-                  buttonHeight: 50,
-                  buttonBackgroundColor: AppColors.primary,
-                  buttonTextcolor: AppColors.background,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SelectScreen(),
-                      ),
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: MyButtons(
+                    buttonText: "Login",
+                    buttonHeight: 50,
+                    buttonBackgroundColor: AppColors.primary,
+                    buttonTextcolor: AppColors.background,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SelectScreen(
+                            cameras: cameras,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
 
                 Padding(

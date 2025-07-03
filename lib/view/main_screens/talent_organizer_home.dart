@@ -4,13 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:share_plus/share_plus.dart';
-// import 'package:spotlight/view/main_screens/random.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
 import 'package:spotlight/components/my_circlebuttons.dart';
 import 'package:spotlight/components/video_liked_button.dart';
 import 'package:spotlight/models/notification_model_folder/notification_service.dart';
-// import 'package:spotlight/components/my_drawer.dart';
 import 'package:spotlight/view/post_details_screens/comments_screen.dart';
 import 'package:spotlight/view/main_screens/notificationsPage.dart';
 import 'package:spotlight/models/video_list.dart';
@@ -303,302 +301,289 @@ class _TalentOrganizerHomeState extends State<TalentOrganizerHome> {
           ),
 
           //filter display
-          SizedBox(
-            height: 372,
-            // height: MediaQuery.sizeOf(context).height * 0.63,
-            child: ListView.builder(
-              itemCount: filteredVideos.length,
-              itemBuilder: (context, index) {
-                final vl = filteredVideos[index];
-                return Container(
-                  height: 400,
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 10),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(vl['thumbnail']),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    child: Row(
-                      //containing two columns: one for profile side and another for video perfomance metrics
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 10,
-                          children: [
-                            //white genre text button
-                            Container(
-                                height: 32,
-                                width: 76,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
+          ...List.generate(
+            filteredVideos.length,
+            (index) {
+              final vl = filteredVideos[index];
+              return Container(
+                height: 400,
+                width: double.infinity,
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(vl['thumbnail']),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Row(
+                    //containing two columns: one for profile side and another for video perfomance metrics
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 10,
+                        children: [
+                          //white genre text button
+                          Container(
+                              height: 32,
+                              width: 76,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                  color: AppColors.background,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  MyCircleButtons(
+                                    theIcon: Icons.music_note_rounded,
+                                    backgroundColor: AppColors.black,
+                                    iconColor: AppColors.primary,
+                                    iconSize: 12,
+                                    radius: 7,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    vl['genre'],
+                                    style: GoogleFonts.inter(
+                                        color: AppColors.black,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              )),
+
+                          //row containing profile pic, name, verified button and follow button
+                          Row(
+                            spacing: 5,
+                            children: [
+                              Container(
                                 decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white, // border color
+                                    width: 2.0, // border width
+                                  ),
+                                ),
+                                child: CircleAvatar(
+                                  radius: 16.0,
+                                  backgroundImage: AssetImage(vl['profilePic']),
+                                ),
+                              ),
+                              Text(
+                                vl['creator'],
+                                style: GoogleFonts.roboto(
                                     color: AppColors.background,
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    MyCircleButtons(
-                                      theIcon: Icons.music_note_rounded,
-                                      backgroundColor: AppColors.black,
-                                      iconColor: AppColors.primary,
-                                      iconSize: 12,
-                                      radius: 7,
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      vl['genre'],
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Icon(
+                                Iconsax.verify5,
+                                color: Colors.yellow,
+                                size: 17,
+                              ),
+                              Container(
+                                  height: 20,
+                                  width: 64,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.transparent,
+                                      border: Border.all(
+                                          color: AppColors.background,
+                                          width: 2),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Center(
+                                    child: Text(
+                                      "Follow",
                                       style: GoogleFonts.inter(
-                                          color: AppColors.black,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w400),
+                                          color: AppColors.background,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 9),
+                                    ),
+                                  ))
+                            ],
+                          ),
+
+                          //text widget showing the video name
+                          Text(
+                            vl['title'],
+                            style: GoogleFonts.inter(
+                              color: AppColors.background,
+                            ),
+                          ),
+
+                          //row of text widget showing the video genre
+                          Text(
+                            "#Talent #Business #Artiste",
+                            style: GoogleFonts.inter(
+                              color: AppColors.background,
+                            ),
+                          ),
+
+                          //row of viewers images, no of views and date uploaded
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width:
+                                    40, // Adjust based on how many avatars and overlap
+                                height: 32, // Avatar diameter (2 * radius)
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      left: 0,
+                                      top: 5,
+                                      child: CircleAvatar(
+                                        radius: 10.0,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/girl_two.jpg'),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 10,
+                                      top: 5, // overlapping offset
+                                      child: CircleAvatar(
+                                        radius: 10.0,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/girl_three.jpg'),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 20,
+                                      top: 5,
+                                      child: CircleAvatar(
+                                        radius: 10.0,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/girl_four.jpg'),
+                                      ),
                                     ),
                                   ],
-                                )),
-
-                            //row containing profile pic, name, verified button and follow button
-                            Row(
-                              spacing: 5,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.white, // border color
-                                      width: 2.0, // border width
-                                    ),
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: 16.0,
-                                    backgroundImage:
-                                        AssetImage(vl['profilePic']),
-                                  ),
                                 ),
-                                Text(
-                                  vl['creator'],
-                                  style: GoogleFonts.roboto(
-                                      color: AppColors.background,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Icon(
-                                  Iconsax.verify5,
-                                  color: Colors.yellow,
-                                  size: 17,
-                                ),
-                                Container(
-                                    height: 20,
-                                    width: 64,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: AppColors.transparent,
-                                        border: Border.all(
-                                            color: AppColors.background,
-                                            width: 2),
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: Center(
-                                      child: Text(
-                                        "Follow",
-                                        style: GoogleFonts.inter(
-                                            color: AppColors.background,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 9),
-                                      ),
-                                    ))
-                              ],
-                            ),
-
-                            //text widget showing the video name
-                            Text(
-                              vl['title'],
-                              style: GoogleFonts.inter(
-                                color: AppColors.background,
                               ),
-                            ),
-
-                            //row of text widget showing the video genre
-                            Text(
-                              "#Talent #Business #Artiste",
-                              style: GoogleFonts.inter(
-                                color: AppColors.background,
+                              Text(
+                                '22k Views | 3Days',
+                                style: GoogleFonts.inter(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                        ],
+                      ),
 
-                            //row of viewers images, no of views and date uploaded
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      40, // Adjust based on how many avatars and overlap
-                                  height: 32, // Avatar diameter (2 * radius)
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 0,
-                                        top: 5,
-                                        child: CircleAvatar(
-                                          radius: 10.0,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/girl_two.jpg'),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 10,
-                                        top: 5, // overlapping offset
-                                        child: CircleAvatar(
-                                          radius: 10.0,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/girl_three.jpg'),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 20,
-                                        top: 5,
-                                        child: CircleAvatar(
-                                          radius: 10.0,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/girl_four.jpg'),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                      //second column for the metrics
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          //icon and number under it
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            spacing: 20,
+                            children: [
+                              //like button
+                              GestureDetector(
+                                onTap: () {
+                                  NotificationService().addNotification(
+                                      "Someone just liked your post");
+                                  setState(() {});
+                                },
+                                child: VideoLikeButton(
+                                  // icon: Iconsax.heart,
+                                  initialCount: 66,
                                 ),
-                                Text(
-                                  '22k Views | 3Days',
-                                  style: GoogleFonts.inter(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
 
-                        //second column for the metrics
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            //icon and number under it
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              spacing: 20,
-                              children: [
-                                //like button
-                                GestureDetector(
+                              //comment section
+                              videoMetrics(
+                                  theWidget: SvgPicture.asset(
+                                      'assets/images/comment_icon.svg',
+                                      width: 24,
+                                      height: 24),
+
+                                  // theIcon: Iconsax.message,
+                                  theText: "22k",
                                   onTap: () {
+                                    showModalBottomSheet(
+                                      useSafeArea: false,
+                                      // backgroundColor: AppColors.transparent,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                        ),
+                                      ),
+                                      context: context,
+                                      isScrollControlled:
+                                          true, // Allows the modal to take full screen
+                                      isDismissible:
+                                          true, // Enables dismissing by tapping outside
+                                      enableDrag:
+                                          true, // Enables dragging to close
+                                      builder: (context) {
+                                        return FractionallySizedBox(
+                                          heightFactor:
+                                              0.8, // 80% of the screen height
+                                          child:
+                                              CommentsScreen(), // Replace with your desired widget
+                                        );
+                                      },
+                                    );
                                     NotificationService().addNotification(
-                                        "Someone just liked your post");
-                                    setState(() {});
-                                  },
-                                  child: VideoLikeButton(
-                                    // icon: Iconsax.heart,
-                                    initialCount: 66,
-                                  ),
-                                ),
-                                // videoMetrics(
-                                //     theIcon: Icons.favorite_border_outlined,
-                                //     theText: "66k",
-                                //     onTap: () {
-                                //       NotificationService().addNotification(
-                                //           "Someone just liked your post");
-                                //       setState(() {});
-                                //     }),
-
-                                //comment section
-                                videoMetrics(
-                                    theWidget: SvgPicture.asset(
-                                        'assets/images/comment_icon.svg',
-                                        width: 24,
-                                        height: 24),
-
-                                    // theIcon: Iconsax.message,
-                                    theText: "22k",
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        useSafeArea: false,
-                                        // backgroundColor: AppColors.transparent,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
-                                          ),
-                                        ),
-                                        context: context,
-                                        isScrollControlled:
-                                            true, // Allows the modal to take full screen
-                                        isDismissible:
-                                            true, // Enables dismissing by tapping outside
-                                        enableDrag:
-                                            true, // Enables dragging to close
-                                        builder: (context) {
-                                          return FractionallySizedBox(
-                                            heightFactor:
-                                                0.8, // 80% of the screen height
-                                            child:
-                                                CommentsScreen(), // Replace with your desired widget
-                                          );
-                                        },
-                                      );
-                                      NotificationService().addNotification(
-                                          "Someone commented on your post!");
-                                    }),
-                                //share button
-                                videoMetrics(
-                                    theWidget: SvgPicture.asset(
-                                        'assets/images/share_item_icon.svg',
-                                        width: 24,
-                                        height: 24),
-                                    // theIcon: Iconsax.document_forward,
-                                    theText: "1k",
-                                    onTap: () {
-                                      SharePlus.instance.share(
-                                        ShareParams(
-                                          text: 'Share to:',
-                                        ),
-                                      );
-                                      setState(
-                                        () {
-                                          // ignore: deprecated_member_use
-                                          // Share.share('Share the link');
-                                        },
-                                      );
-                                    }),
-                                //gift button
-                                videoMetrics(
-                                    theWidget: SvgPicture.asset(
-                                        'assets/images/gift_icon.svg',
-                                        width: 24,
-                                        height: 24),
-                                    // theIcon: Iconsax.gift,
-                                    theText: "1k",
-                                    onTap: () {}),
-                                //bookmark button
-                                videoMetrics(
-                                    theWidget: Icon(Icons.bookmark,
-                                        color: Colors.white, size: 24),
-                                    // theIcon: Icons.bookmark,
-                                    theText: "100",
-                                    onTap: () {}),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                                        "Someone commented on your post!");
+                                  }),
+                              //share button
+                              videoMetrics(
+                                  theWidget: SvgPicture.asset(
+                                      'assets/images/share_item_icon.svg',
+                                      width: 24,
+                                      height: 24),
+                                  // theIcon: Iconsax.document_forward,
+                                  theText: "1k",
+                                  onTap: () {
+                                    SharePlus.instance.share(
+                                      ShareParams(
+                                        text: 'Share to:',
+                                      ),
+                                    );
+                                    setState(
+                                      () {
+                                        // ignore: deprecated_member_use
+                                        // Share.share('Share the link');
+                                      },
+                                    );
+                                  }),
+                              //gift button
+                              videoMetrics(
+                                  theWidget: SvgPicture.asset(
+                                      'assets/images/gift_icon.svg',
+                                      width: 24,
+                                      height: 24),
+                                  // theIcon: Iconsax.gift,
+                                  theText: "1k",
+                                  onTap: () {}),
+                              //bookmark button
+                              videoMetrics(
+                                  theWidget: Icon(Icons.bookmark,
+                                      color: Colors.white, size: 24),
+                                  // theIcon: Icons.bookmark,
+                                  theText: "100",
+                                  onTap: () {}),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -617,14 +602,6 @@ class _TalentOrganizerHomeState extends State<TalentOrganizerHome> {
           onTap: onTap,
           child: theWidget,
         ),
-        // GestureDetector(
-        //   onTap: onTap,
-        //   child: Icon(
-        //     theIcon,
-        //     color: Colors.white,
-        //     size: 18,
-        //   ),
-        // ),
         Text(
           theText,
           style: GoogleFonts.inter(color: Colors.white, fontSize: 10),

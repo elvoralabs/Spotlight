@@ -5,8 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/components/my_buttons.dart';
+import 'package:spotlight/models/select_media_model/selected_media_provider.dart';
 import 'package:spotlight/view/create_post_folder/pre_post_page.dart';
 
 class MediaGalleryScreen extends StatefulWidget {
@@ -78,6 +80,8 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
   }
 
   Widget _buildGrid(List<AssetEntity> media) {
+    final selectedMedia =
+        Provider.of<SelectedMediaProvider>(context).selectedMedia;
     return GridView.builder(
       controller: _scrollController,
       itemCount: media.length,
@@ -89,14 +93,14 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
       ),
       itemBuilder: (context, index) {
         final asset = media[index];
-        final isSelected = selected.contains(asset);
+        final isSelected = selectedMedia.contains(asset);
         return GestureDetector(
           onTap: () {
             setState(() {
               if (isSelected) {
-                selected.remove(asset);
+                selectedMedia.remove(asset);
               } else {
-                selected.add(asset);
+                selectedMedia.add(asset);
               }
             });
           },
@@ -114,7 +118,7 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
                     radius: 10,
                     // child: Icon(Icons.check, size: 16, color: Colors.white),
                     child: Text(
-                      (selected.indexOf(asset) + 1).toString(),
+                      (selectedMedia.indexOf(asset) + 1).toString(),
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: Colors.white,
@@ -131,6 +135,8 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
 
   @override
   Widget build(BuildContext context) {
+    final selectedMedia =
+        Provider.of<SelectedMediaProvider>(context).selectedMedia;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -279,7 +285,7 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
                               .saveImage(await file.readAsBytes(),
                                   title: filename, filename: filename);
                           setState(() {
-                            selected.add(asset);
+                            selectedMedia.add(asset);
                           });
                         }
                       },
@@ -315,7 +321,7 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
                           AssetEntity? asset = await PhotoManager.editor
                               .saveVideo(file, title: filename);
                           setState(() {
-                            selected.add(asset);
+                            selectedMedia.add(asset);
                           });
                         }
                       },
@@ -351,10 +357,10 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
               child: Row(
                 children: [
                   Icon(
-                    selected.isNotEmpty
+                    selectedMedia.isNotEmpty
                         ? Icons.check_circle
                         : Icons.radio_button_unchecked,
-                    color: selected.isNotEmpty
+                    color: selectedMedia.isNotEmpty
                         ? AppColors.primary
                         : AppColors.black,
                     size: 18,
@@ -369,8 +375,8 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
                   ),
                   Spacer(),
                   MyButtons(
-                    buttonText: "Next (${selected.length})",
-                    buttonBackgroundColor: selected.isNotEmpty
+                    buttonText: "Next (${selectedMedia.length})",
+                    buttonBackgroundColor: selectedMedia.isNotEmpty
                         ? AppColors.primary
                         : AppColors.neutralLight,
                     buttonWidth: 96,
@@ -378,15 +384,15 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
                     buttonTextstyle: GoogleFonts.inter(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: selected.isNotEmpty
+                        color: selectedMedia.isNotEmpty
                             ? AppColors.background
                             : AppColors.neutral),
                     onTap: () {
+                      // Provider.of<SelectedMediaProvider>(context, listen: false)
+                      // .setSelectedMedia(selected);
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => PrePostPage(
-                            selectedMedia: selected,
-                          ),
+                          builder: (context) => PrePostPage(),
                         ),
                       );
                     },
