@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spotlight/components/colors.dart';
 import 'package:spotlight/view/profile_screens/edit_profile.dart';
+import 'package:spotlight/view/manage_competition/mng_comp_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -144,7 +145,30 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.grey),
                   ),
                 ],
-              )
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ManageCompetitionPage(),
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 249, 157, 157),
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 5.0),
+                  child: Text(
+                    'My competitions',
+                    style: TextStyle(fontSize: 13.0),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
